@@ -12,7 +12,7 @@ import NIO
 import NIOHTTP1
 import Foundation
 
-protocol Fnable {
+public protocol Fnable {
     func handler(ctx: Context, reqBody: HTTPBody?) -> HTTPBody?
 }
 
