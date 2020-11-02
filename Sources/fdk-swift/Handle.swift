@@ -39,7 +39,7 @@ open class Handle
     private init()
     {
         udsFn = ProcessInfo.processInfo.environment["FN_LISTENER"]
-        errorPrint("FN_LISTENER: \(udsFn)")
+        log("FN_LISTENER: \(udsFn)")
         
         // are we running local (ip socket) or in a Fn server (unix socket)?
         if let udsFn = udsFn {
@@ -47,7 +47,7 @@ open class Handle
             bindTarget = BindTo.unixDomainSocket(path: uds!)
         } else {
             bindTarget = BindTo.ip(host: defaultHost, port: defaultPort)
-            errorPrint("Starting in local mode")
+            log("Starting in local mode")
         }
         
         group = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
@@ -55,7 +55,7 @@ open class Handle
     
     public func run(_ fn: Fnable) {
         defer {
-            errorPrint("Shutting down gracefully")
+            log("Shutting down gracefully")
             try! group.syncShutdownGracefully()
         }
         
@@ -91,13 +91,13 @@ open class Handle
                     fatalError("Address was unable to bind. Please check that the socket was not closed or that the address family was understood.")
                 }
             localAddress = "\(channelLocalAddress)"
-            errorPrint("Server started and listening on \(localAddress)")
+            log("Server started and listening on \(localAddress)")
             
             // This will never unblock as we don't close the ServerChannel
             try channel.closeFuture.wait()
-            errorPrint("Server closed")
+            log("Server closed")
         } catch {
-            errorPrint("Unexpected error: \(error).")
+            log("Unexpected error: \(error).")
         }
     }
 }
@@ -112,7 +112,7 @@ extension FileHandle : TextOutputStream {
   }
 }
 
-func errorPrint<T>(_ s:T) {
+public func log<T>(_ s:T) {
     print(s, to: &standardError)
 }
 
