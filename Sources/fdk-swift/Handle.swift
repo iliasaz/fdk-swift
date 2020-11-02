@@ -34,7 +34,7 @@ open class Handle
     private var uds: String?
     private var group: MultiThreadedEventLoopGroup
     
-    static let main = Handle()
+    public static let main = Handle()
 
     private init()
     {
