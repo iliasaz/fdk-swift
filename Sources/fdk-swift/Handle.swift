@@ -18,7 +18,7 @@ public protocol Fnable {
 
 
 // Singleton class to run the server
-class Handle
+open class Handle
 {
     private var udsFn: String?
     // for testing locally
