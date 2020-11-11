@@ -24,11 +24,12 @@ internal struct Router: HTTPResponder {
             // Fn supports only POST method internally, and the only rounte is /call
             case .POST, .GET:
                 guard request.head.uri.starts(with: "/call") else {break}
+                /// HTTP Gateway Protocol Extension
                 let ctx: Context = Context(
-                    callId: request.head.headers.first(name: "Fn-Call-Id"),
-                    deadLine: request.head.headers.first(name: "Fn-Deadline"),
-                    method: request.head.headers.first(name: "Fn-Http-Method"),
-                    requestURL: request.head.headers.first(name: "Fn-Http-Request-Url"),
+                    callId: request.head.headers.first(name: "Fn-Call-Id")!,
+                    deadLine: request.head.headers.first(name: "Fn-Deadline")!,
+                    method: request.head.headers.first(name: "Fn-Http-Method")!,
+                    requestURL: request.head.headers.first(name: "Fn-Http-Request-Url")!,
                     headers: request.head.headers
                 )
                 guard let fn = fn else {return request.eventLoop.makeSucceededFuture(defaultResponse)}

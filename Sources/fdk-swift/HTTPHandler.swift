@@ -14,6 +14,7 @@ import Foundation
 
 private func httpResponseHead(request: HTTPRequestHead, status: HTTPResponseStatus, headers: HTTPHeaders = HTTPHeaders()) -> HTTPResponseHead {
     var head = HTTPResponseHead(version: request.version, status: status, headers: headers)
+    head.headers.add(name: "Fn-Http-Status", value: String(status.code))
     let connectionHeaders: [String] = head.headers[canonicalForm: "connection"].map { $0.lowercased() }
 
     if !connectionHeaders.contains("keep-alive") && !connectionHeaders.contains("close") {
